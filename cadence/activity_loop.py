@@ -38,6 +38,11 @@ def activity_task_loop(worker: Worker):
                 return
             except Exception as ex:
                 logger.error("PollForActivityTask error: %s", ex)
+                try:
+                    service.close()
+                except:
+                    logger.warning("service.close() failed", exc_info=1)
+                worker.notify_thread_stopped()
                 raise
             if err:
                 logger.error("PollForActivityTask failed: %s", err)
