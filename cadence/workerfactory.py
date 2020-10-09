@@ -1,5 +1,6 @@
-from dataclasses import dataclass, field
 from typing import List
+
+from dataclasses import dataclass, field
 
 from cadence.worker import Worker, WorkerOptions
 
@@ -17,8 +18,9 @@ class WorkerFactory:
     options: WorkerFactoryOptions = None
     workers: List[Worker] = field(default_factory=list)
 
-    def new_worker(self, task_list: str, worker_options: WorkerOptions = None) -> Worker:
-        worker = Worker(host=self.host, port=self.port, domain=self.domain, task_list=task_list, options=worker_options)
+    def new_worker(self, task_list: str, timeout: int = 120, worker_options: WorkerOptions = None) -> Worker:
+        worker = Worker(host=self.host, port=self.port, domain=self.domain, task_list=task_list, timeout=timeout,
+                        options=worker_options)
         self.workers.append(worker)
         return worker
 
