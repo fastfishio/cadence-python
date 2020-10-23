@@ -900,10 +900,11 @@ class DecisionTaskLoop:
             logger.debug("PollForDecisionTask: %dms", (polling_end - polling_start).total_seconds() * 1000)
         except TChannelException as ex:
             logger.error("PollForDecisionTask error: %s", ex)
-            return None
+            raise
         if err:
             logger.error("PollForDecisionTask failed: %s", err)
-            return None
+            raise
+            # return None
         if not task.task_token:
             logger.debug("PollForActivityTask has no task token (expected): %s", task)
             return None
