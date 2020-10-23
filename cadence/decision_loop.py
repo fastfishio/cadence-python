@@ -880,9 +880,11 @@ class DecisionTaskLoop:
         finally:
         # noinspection PyPep8,PyBroadException
             try:
+                logger.info(f"closing wf service")
                 self.service.close()
             except:
                 logger.warning("service.close() failed", exc_info=1)
+            logger.info(f"notifying worker thread stopped")
             self.worker.notify_thread_stopped()
 
     def poll(self) -> Optional[PollForDecisionTaskResponse]:
@@ -900,6 +902,7 @@ class DecisionTaskLoop:
             logger.debug("PollForDecisionTask: %dms", (polling_end - polling_start).total_seconds() * 1000)
         except TChannelException as ex:
             logger.error("PollForDecisionTask error: %s", ex)
+            logger.info(f"raising exception PollForDecisionTask {ex}")
             raise
         if err:
             logger.error("PollForDecisionTask failed: %s", err)
