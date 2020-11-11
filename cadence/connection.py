@@ -180,7 +180,7 @@ class ThriftFunctionCall(ThriftArgScheme):
         # PollForActivityTask is hardcoded on the server to timeout at
         # 60 seconds, so the ttl needs to be slightly more so that it
         # does not fail.
-        o.ttl = 61000
+        o.ttl = 100000
         return o
 
     @staticmethod
