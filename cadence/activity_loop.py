@@ -37,6 +37,8 @@ def activity_task_loop(worker: Worker):
             except StopRequestedException:
                 return
             except Exception as ex:
+                if f'{ex}' == "timeout":
+                    logger.info(f"LongPoll timeout -- no tasks available to execute -- exception message: {ex}")
                 logger.error("PollForActivityTask error: %s", ex)
                 try:
                     service.close()
