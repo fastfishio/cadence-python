@@ -901,6 +901,10 @@ class DecisionTaskLoop:
             polling_end = datetime.datetime.now()
             logger.debug("PollForDecisionTask: %dms", (polling_end - polling_start).total_seconds() * 1000)
         except TChannelException as ex:
+            if f'{ex}' == "timeout":
+                logger.warning("PollForDecisionTask error: %s", ex)
+                logger.warning(f"LongPoll timeout -- no tasks available to execute -- exception message: {ex}")
+                return None
             logger.error("PollForDecisionTask error: %s", ex)
             logger.info(f"raising exception PollForDecisionTask {ex}")
             raise
